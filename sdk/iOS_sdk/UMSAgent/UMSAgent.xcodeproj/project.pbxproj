@@ -15,11 +15,6 @@
 		362FE8A2152D7BB50036B178 /* ActivityLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 362FE8A0152D7BB50036B178 /* ActivityLog.m */; };
 		3630005C15131A1600E84C2D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3630005B15131A1600E84C2D /* Foundation.framework */; };
 		3630006215131A1600E84C2D /* UMSAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3630006115131A1600E84C2D /* UMSAgent.m */; };
-		3630006A15131A1600E84C2D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3630006915131A1600E84C2D /* SenTestingKit.framework */; };
-		3630006D15131A1600E84C2D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3630005B15131A1600E84C2D /* Foundation.framework */; };
-		3630007015131A1600E84C2D /* libUMSAgent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3630005815131A1600E84C2D /* libUMSAgent.a */; };
-		3630007615131A1600E84C2D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3630007415131A1600E84C2D /* InfoPlist.strings */; };
-		3630007915131A1600E84C2D /* UMSAgentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3630007815131A1600E84C2D /* UMSAgentTests.m */; };
 		3656570517F41AFA0057FA57 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 3656570317F41AFA0057FA57 /* SFHFKeychainUtils.h */; };
 		3656570617F41AFA0057FA57 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3656570417F41AFA0057FA57 /* SFHFKeychainUtils.m */; };
 		3656570A17F41DF30057FA57 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3656570917F41DF30057FA57 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -45,7 +40,6 @@
 		8447F4CA15187D8300D14FD9 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 8447F4C815187D8300D14FD9 /* Global.h */; };
 		8447F4CB15187D8300D14FD9 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 8447F4C915187D8300D14FD9 /* Global.m */; };
 		8447F4CD1518835E00D14FD9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8447F4CC1518835E00D14FD9 /* UIKit.framework */; };
-		8447F4CE1518860B00D14FD9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8447F4CC1518835E00D14FD9 /* UIKit.framework */; };
 		8447F4D515188ACF00D14FD9 /* PostClientDataDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 8447F4D315188ACF00D14FD9 /* PostClientDataDao.h */; };
 		8447F4D615188ACF00D14FD9 /* PostClientDataDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 8447F4D415188ACF00D14FD9 /* PostClientDataDao.m */; };
 		847BB17B15172E2C00933648 /* network.h in Headers */ = {isa = PBXBuildFile; fileRef = 847BB17915172E2C00933648 /* network.h */; };
@@ -73,16 +67,6 @@
 		};
 /* End PBXBuildRule section */
 
-/* Begin PBXContainerItemProxy section */
-		3630006E15131A1600E84C2D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3630004F15131A1600E84C2D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3630005715131A1600E84C2D;
-			remoteInfo = UMSAgent;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		1839C7281808133300585130 /* PostTagDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTagDao.h; sourceTree = "<group>"; };
 		1839C7291808133300585130 /* PostTagDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagDao.m; sourceTree = "<group>"; };
@@ -95,7 +79,6 @@
 		3630005F15131A1600E84C2D /* UMSAgent-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UMSAgent-Prefix.pch"; sourceTree = "<group>"; };
 		3630006015131A1600E84C2D /* UMSAgent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMSAgent.h; sourceTree = "<group>"; };
 		3630006115131A1600E84C2D /* UMSAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UMSAgent.m; sourceTree = "<group>"; };
-		3630006815131A1600E84C2D /* UMSAgentTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UMSAgentTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3630006915131A1600E84C2D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		3630007315131A1600E84C2D /* UMSAgentTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UMSAgentTests-Info.plist"; sourceTree = "<group>"; };
 		3630007515131A1600E84C2D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -155,17 +138,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3630006415131A1600E84C2D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8447F4CE1518860B00D14FD9 /* UIKit.framework in Frameworks */,
-				3630006A15131A1600E84C2D /* SenTestingKit.framework in Frameworks */,
-				3630006D15131A1600E84C2D /* Foundation.framework in Frameworks */,
-				3630007015131A1600E84C2D /* libUMSAgent.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -188,7 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				3630005815131A1600E84C2D /* libUMSAgent.a */,
-				3630006815131A1600E84C2D /* UMSAgentTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -373,25 +344,6 @@
 			productReference = 3630005815131A1600E84C2D /* libUMSAgent.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3630006715131A1600E84C2D /* UMSAgentTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3630007F15131A1600E84C2D /* Build configuration list for PBXNativeTarget "UMSAgentTests" */;
-			buildPhases = (
-				3630006315131A1600E84C2D /* Sources */,
-				3630006415131A1600E84C2D /* Frameworks */,
-				3630006515131A1600E84C2D /* Resources */,
-				3630006615131A1600E84C2D /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3630006F15131A1600E84C2D /* PBXTargetDependency */,
-			);
-			name = UMSAgentTests;
-			productName = UMSAgentTests;
-			productReference = 3630006815131A1600E84C2D /* UMSAgentTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -413,37 +365,9 @@
 			projectRoot = "";
 			targets = (
 				3630005715131A1600E84C2D /* UMSAgent */,
-				3630006715131A1600E84C2D /* UMSAgentTests */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		3630006515131A1600E84C2D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3630007615131A1600E84C2D /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		3630006615131A1600E84C2D /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3630005415131A1600E84C2D /* Sources */ = {
@@ -474,23 +398,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3630006315131A1600E84C2D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3630007915131A1600E84C2D /* UMSAgentTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		3630006F15131A1600E84C2D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3630005715131A1600E84C2D /* UMSAgent */;
-			targetProxy = 3630006E15131A1600E84C2D /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		3630007415131A1600E84C2D /* InfoPlist.strings */ = {
@@ -510,6 +418,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -525,6 +434,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -535,6 +445,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -543,6 +454,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -552,6 +464,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DSTROOT = /tmp/UMSAgent.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UMSAgent/UMSAgent-Prefix.pch";
@@ -576,36 +489,6 @@
 			};
 			name = Release;
 		};
-		3630008015131A1600E84C2D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "UMSAgent/UMSAgent-Prefix.pch";
-				INFOPLIST_FILE = "UMSAgentTests/UMSAgentTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		3630008115131A1600E84C2D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "UMSAgent/UMSAgent-Prefix.pch";
-				INFOPLIST_FILE = "UMSAgentTests/UMSAgentTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -623,15 +506,6 @@
 			buildConfigurations = (
 				3630007D15131A1600E84C2D /* Debug */,
 				3630007E15131A1600E84C2D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3630007F15131A1600E84C2D /* Build configuration list for PBXNativeTarget "UMSAgentTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3630008015131A1600E84C2D /* Debug */,
-				3630008115131A1600E84C2D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

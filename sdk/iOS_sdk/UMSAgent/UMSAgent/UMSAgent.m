@@ -38,7 +38,7 @@
 #import <sys/utsname.h>
 #import "ClientData.h"
 #import "Tag.h"
-#import <AdSupport/AdSupport.h>
+//#import <AdSupport/AdSupport.h>
 #import "SFHFKeychainUtils.h"
 
 @interface UMSAgent ()
@@ -1226,7 +1226,8 @@ uncaughtExceptionHandler(NSException *exception) {
     }
     else
     {
-        NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+        NSString *idfa = [[[UIDevice currentDevice] identifierForVendor] UUIDString];//idfv
+        //NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
         if(idfa && ![idfa isEqualToString:@""])
         {
             [SFHFKeychainUtils storeUsername:@"UMSAgentUDID" andPassword:idfa forServiceName:@"UMSAgent" updateExisting:NO error:nil];

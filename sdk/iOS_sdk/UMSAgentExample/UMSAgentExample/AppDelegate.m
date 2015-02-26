@@ -25,7 +25,8 @@
 {
     [UMSAgent bindUserIdentifier:@"wbtech"];
 
-    [UMSAgent startWithAppKey:@"2f5aa53b5ae03307274b596bbbeaa9ff" ReportPolicy:REALTIME ServerURL:@"http://192.168.1.104:8877/rcobub/index.php?"];
+    //[UMSAgent startWithAppKey:@"2f5aa53b5ae03307274b596bbbeaa9ff" ReportPolicy:REALTIME ServerURL:@"http://192.168.1.104:8877/rcobub/index.php?"];
+    [UMSAgent startWithAppKey:@"5bc50e2b30a8621cc28db292c6e72b64" ReportPolicy:REALTIME ServerURL:@"http://10.135.195.178/index.php?"];
     
     
     [UMSAgent setIsLogEnabled:YES];

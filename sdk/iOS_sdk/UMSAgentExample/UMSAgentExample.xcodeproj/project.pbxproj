@@ -222,7 +222,7 @@
 			name = UMSAgentExampleTests;
 			productName = UMSAgentExampleTests;
 			productReference = 3609A5CA15180C7300BEDA05 /* UMSAgentExampleTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -233,7 +233,10 @@
 				LastUpgradeCheck = 0430;
 				TargetAttributes = {
 					3609A5A815180C7300BEDA05 = {
-						DevelopmentTeam = F9C6W6M498;
+						DevelopmentTeam = L9E89VMHQT;
+					};
+					3609A5C915180C7300BEDA05 = {
+						DevelopmentTeam = L9E89VMHQT;
 					};
 				};
 			};
@@ -373,8 +376,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "C49C6841-979A-42CA-A64A-1086D4E72591";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C49C6841-979A-42CA-A64A-1086D4E72591";
+				PROVISIONING_PROFILE = "30b05a65-76b0-4825-a6c6-bccfe83b5267";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30b05a65-76b0-4825-a6c6-bccfe83b5267";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -396,8 +399,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "C49C6841-979A-42CA-A64A-1086D4E72591";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C49C6841-979A-42CA-A64A-1086D4E72591";
+				PROVISIONING_PROFILE = "30b05a65-76b0-4825-a6c6-bccfe83b5267";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30b05a65-76b0-4825-a6c6-bccfe83b5267";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -423,7 +426,7 @@
 					"\"$(SRCROOT)/UMSAgentExample/ums\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "30b05a65-76b0-4825-a6c6-bccfe83b5267";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -449,7 +452,7 @@
 					"\"$(SRCROOT)/UMSAgentExample/ums\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "30b05a65-76b0-4825-a6c6-bccfe83b5267";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -459,6 +462,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/UMSAgentExample.app/UMSAgentExample";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -467,6 +472,7 @@
 				GCC_PREFIX_HEADER = "UMSAgentExample/UMSAgentExample-Prefix.pch";
 				INFOPLIST_FILE = "UMSAgentExampleTests/UMSAgentExampleTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -476,6 +482,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/UMSAgentExample.app/UMSAgentExample";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -484,6 +492,7 @@
 				GCC_PREFIX_HEADER = "UMSAgentExample/UMSAgentExample-Prefix.pch";
 				INFOPLIST_FILE = "UMSAgentExampleTests/UMSAgentExampleTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};

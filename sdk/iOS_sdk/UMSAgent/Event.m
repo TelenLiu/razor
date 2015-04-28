@@ -32,7 +32,6 @@
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
-
     [aCoder encodeObject:event_id forKey:@"event_id"];
     [aCoder encodeObject:label forKey:@"label"];
     [aCoder encodeObject:time forKey:@"time"];
@@ -42,5 +41,29 @@
 }
 
 
++ (NSString *)sqlite_createTable
+{
+    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (event_id text,time text,activity text,label text,acc integer,version text)",NSStringFromClass(self)];
+}
+
+- (NSString*)sqlite_insertPerInfo
+{
+    return [NSString stringWithFormat:@"INSERT INTO %@ VALUES('%@','%@','%@','%@',%d,'%@')",NSStringFromClass(self.class),event_id,time,activity,label,acc,version];
+}
+
++(NSString*)sqlite_selectListCount:(NSUInteger)count
+{
+    return [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY time LIMIT 0,%d",NSStringFromClass(self),count];
+}
+
++(NSString*)sqlite_countTable
+{
+    return [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@",NSStringFromClass(self)];
+}
+
++(NSString*)sqlite_deleteListCount:(NSUInteger)count
+{
+    return [NSString stringWithFormat:@"DELETE FROM %@ WHERE time IN(SELECT time FROM %@ ORDER BY time LIMIT 0,%d)",NSStringFromClass(self),NSStringFromClass(self),count];
+}
 
 @end

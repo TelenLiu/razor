@@ -17,4 +17,11 @@
 @property (nonatomic,strong) NSString *tags;
 @property (nonatomic,strong) NSString *deviceid;
 @property (nonatomic,strong) NSString *productkey;
+
++(NSString*)sqlite_createTable;
+-(NSString*)sqlite_insertPerInfo;
++(NSString*)sqlite_selectListCount:(NSUInteger)count;
++(NSString*)sqlite_countTable;
++(NSString*)sqlite_deleteListCount:(NSUInteger)count;
+
 @end

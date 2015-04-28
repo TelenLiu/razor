@@ -33,6 +33,19 @@
 		36C95BB91522E74100725BBA /* UMSAgent.h in Headers */ = {isa = PBXBuildFile; fileRef = 3630006015131A1600E84C2D /* UMSAgent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		36FA717C1526D9D90049AF2C /* OpenUDID.h in Headers */ = {isa = PBXBuildFile; fileRef = 36FA717A1526D9D90049AF2C /* OpenUDID.h */; };
 		36FA717D1526D9D90049AF2C /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FA717B1526D9D90049AF2C /* OpenUDID.m */; };
+		6D0E81A21AEF81040018A41D /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E81951AEF81040018A41D /* FMDatabase.h */; };
+		6D0E81A31AEF81040018A41D /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0E81961AEF81040018A41D /* FMDatabase.m */; };
+		6D0E81A41AEF81040018A41D /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E81971AEF81040018A41D /* FMDatabaseAdditions.h */; };
+		6D0E81A51AEF81040018A41D /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0E81981AEF81040018A41D /* FMDatabaseAdditions.m */; };
+		6D0E81A61AEF81040018A41D /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E81991AEF81040018A41D /* FMDatabasePool.h */; };
+		6D0E81A71AEF81040018A41D /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0E819A1AEF81040018A41D /* FMDatabasePool.m */; };
+		6D0E81A81AEF81040018A41D /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E819B1AEF81040018A41D /* FMDatabaseQueue.h */; };
+		6D0E81A91AEF81040018A41D /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0E819C1AEF81040018A41D /* FMDatabaseQueue.m */; };
+		6D0E81AA1AEF81040018A41D /* FMDB+Telen.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E819D1AEF81040018A41D /* FMDB+Telen.h */; };
+		6D0E81AB1AEF81040018A41D /* FMDB+Telen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0E819E1AEF81040018A41D /* FMDB+Telen.m */; };
+		6D0E81AC1AEF81040018A41D /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E819F1AEF81040018A41D /* FMDB.h */; };
+		6D0E81AD1AEF81040018A41D /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E81A01AEF81040018A41D /* FMResultSet.h */; };
+		6D0E81AE1AEF81040018A41D /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0E81A11AEF81040018A41D /* FMResultSet.m */; };
 		8447F4C015186D3300D14FD9 /* CheckUpdateReturn.h in Headers */ = {isa = PBXBuildFile; fileRef = 8447F4BE15186D3300D14FD9 /* CheckUpdateReturn.h */; };
 		8447F4C115186D3300D14FD9 /* CheckUpdateReturn.m in Sources */ = {isa = PBXBuildFile; fileRef = 8447F4BF15186D3300D14FD9 /* CheckUpdateReturn.m */; };
 		8447F4C615186F4000D14FD9 /* CheckUpdateDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 8447F4C415186F4000D14FD9 /* CheckUpdateDao.h */; };
@@ -101,6 +114,19 @@
 		36B8E534151C4F8A004C3C1F /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		36FA717A1526D9D90049AF2C /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
 		36FA717B1526D9D90049AF2C /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
+		6D0E81951AEF81040018A41D /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		6D0E81961AEF81040018A41D /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		6D0E81971AEF81040018A41D /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		6D0E81981AEF81040018A41D /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		6D0E81991AEF81040018A41D /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		6D0E819A1AEF81040018A41D /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		6D0E819B1AEF81040018A41D /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		6D0E819C1AEF81040018A41D /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		6D0E819D1AEF81040018A41D /* FMDB+Telen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMDB+Telen.h"; sourceTree = "<group>"; };
+		6D0E819E1AEF81040018A41D /* FMDB+Telen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMDB+Telen.m"; sourceTree = "<group>"; };
+		6D0E819F1AEF81040018A41D /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		6D0E81A01AEF81040018A41D /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		6D0E81A11AEF81040018A41D /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		8447F4BE15186D3300D14FD9 /* CheckUpdateReturn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckUpdateReturn.h; sourceTree = "<group>"; };
 		8447F4BF15186D3300D14FD9 /* CheckUpdateReturn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckUpdateReturn.m; sourceTree = "<group>"; };
 		8447F4C415186F4000D14FD9 /* CheckUpdateDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckUpdateDao.h; sourceTree = "<group>"; };
@@ -144,6 +170,7 @@
 		3630004D15131A1600E84C2D = {
 			isa = PBXGroup;
 			children = (
+				6D0E81941AEF81040018A41D /* FMDB */,
 				3656570217F41AFA0057FA57 /* security */,
 				369DFBE117EEA53900A8D1E7 /* touchjson */,
 				8447F4C315186F0A00D14FD9 /* UMSDao */,
@@ -238,6 +265,26 @@
 			path = touchjson;
 			sourceTree = "<group>";
 		};
+		6D0E81941AEF81040018A41D /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				6D0E81951AEF81040018A41D /* FMDatabase.h */,
+				6D0E81961AEF81040018A41D /* FMDatabase.m */,
+				6D0E81971AEF81040018A41D /* FMDatabaseAdditions.h */,
+				6D0E81981AEF81040018A41D /* FMDatabaseAdditions.m */,
+				6D0E81991AEF81040018A41D /* FMDatabasePool.h */,
+				6D0E819A1AEF81040018A41D /* FMDatabasePool.m */,
+				6D0E819B1AEF81040018A41D /* FMDatabaseQueue.h */,
+				6D0E819C1AEF81040018A41D /* FMDatabaseQueue.m */,
+				6D0E819D1AEF81040018A41D /* FMDB+Telen.h */,
+				6D0E819E1AEF81040018A41D /* FMDB+Telen.m */,
+				6D0E819F1AEF81040018A41D /* FMDB.h */,
+				6D0E81A01AEF81040018A41D /* FMResultSet.h */,
+				6D0E81A11AEF81040018A41D /* FMResultSet.m */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
 		8447F4C315186F0A00D14FD9 /* UMSDao */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,13 +346,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				847BB17B15172E2C00933648 /* network.h in Headers */,
+				6D0E81AD1AEF81040018A41D /* FMResultSet.h in Headers */,
 				84C33FC71517684E008B0EC0 /* CommonReturn.h in Headers */,
+				6D0E81A61AEF81040018A41D /* FMDatabasePool.h in Headers */,
+				6D0E81A41AEF81040018A41D /* FMDatabaseAdditions.h in Headers */,
 				369DFBED17EEA53900A8D1E7 /* JSONRepresentation.h in Headers */,
+				6D0E81AC1AEF81040018A41D /* FMDB.h in Headers */,
 				369DFBEB17EEA53900A8D1E7 /* CJSONSerializer.h in Headers */,
 				8447F4C015186D3300D14FD9 /* CheckUpdateReturn.h in Headers */,
 				8447F4C615186F4000D14FD9 /* CheckUpdateDao.h in Headers */,
+				6D0E81A81AEF81040018A41D /* FMDatabaseQueue.h in Headers */,
 				369DFBEE17EEA53900A8D1E7 /* NSDictionary_JSONExtensions.h in Headers */,
 				8447F4CA15187D8300D14FD9 /* Global.h in Headers */,
+				6D0E81AA1AEF81040018A41D /* FMDB+Telen.h in Headers */,
 				8447F4D515188ACF00D14FD9 /* PostClientDataDao.h in Headers */,
 				84B7E4EB1519940D00B9D0BC /* postEventDao.h in Headers */,
 				84B7E4F01519989F00B9D0BC /* Event.h in Headers */,
@@ -314,6 +367,7 @@
 				3656570517F41AFA0057FA57 /* SFHFKeychainUtils.h in Headers */,
 				36C95BB91522E74100725BBA /* UMSAgent.h in Headers */,
 				36FA717C1526D9D90049AF2C /* OpenUDID.h in Headers */,
+				6D0E81A21AEF81040018A41D /* FMDatabase.h in Headers */,
 				362FE8A1152D7BB50036B178 /* ActivityLog.h in Headers */,
 				36B6B3A11563AA1E00AEB577 /* ErrorLog.h in Headers */,
 				36B30157162AD1BD0098FEF5 /* ClientData.h in Headers */,
@@ -379,12 +433,18 @@
 				84C33FC81517684E008B0EC0 /* CommonReturn.m in Sources */,
 				369DFBEF17EEA53900A8D1E7 /* NSDictionary_JSONExtensions.m in Sources */,
 				369DFBEC17EEA53900A8D1E7 /* CJSONSerializer.m in Sources */,
+				6D0E81AB1AEF81040018A41D /* FMDB+Telen.m in Sources */,
 				369DFBEA17EEA53900A8D1E7 /* CJSONDeserializer.m in Sources */,
 				8447F4C115186D3300D14FD9 /* CheckUpdateReturn.m in Sources */,
 				8447F4C715186F4000D14FD9 /* CheckUpdateDao.m in Sources */,
 				8447F4CB15187D8300D14FD9 /* Global.m in Sources */,
+				6D0E81A31AEF81040018A41D /* FMDatabase.m in Sources */,
+				6D0E81A91AEF81040018A41D /* FMDatabaseQueue.m in Sources */,
+				6D0E81A51AEF81040018A41D /* FMDatabaseAdditions.m in Sources */,
 				8447F4D615188ACF00D14FD9 /* PostClientDataDao.m in Sources */,
 				84B7E4EC1519940D00B9D0BC /* postEventDao.m in Sources */,
+				6D0E81AE1AEF81040018A41D /* FMResultSet.m in Sources */,
+				6D0E81A71AEF81040018A41D /* FMDatabasePool.m in Sources */,
 				84B7E4F11519989F00B9D0BC /* Event.m in Sources */,
 				84B7611B151C01A600A7ECF8 /* GetOnlineConfigDao.m in Sources */,
 				84B76120151C02C000A7ECF8 /* ConfigPreference.m in Sources */,

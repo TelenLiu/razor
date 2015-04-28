@@ -41,6 +41,10 @@
 //#import <AdSupport/AdSupport.h>
 #import "SFHFKeychainUtils.h"
 
+#ifdef __UMSAgent_CacheTo_DB
+#import "FMDB.h"
+#endif
+
 @interface UMSAgent ()
 {
     NSString *appKey;
@@ -71,6 +75,9 @@
 @property (nonatomic,strong) NSString *sessionId;
 @property (nonatomic,strong) NSString *pageName;
 @property (nonatomic,strong) NSDate *sessionStopDate;
+#ifdef __UMSAgent_CacheTo_DB
+@property (nonatomic,strong) FMDatabaseQueue* dbQue;
+#endif
 
 @end
 
@@ -85,6 +92,17 @@
 @synthesize sessionId;
 @synthesize pageName;
 @synthesize sessionStopDate;
+//
+#ifdef __UMSAgent_CacheTo_DB
+@synthesize dbQue;
+
++ (NSString*)getDBPath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [[paths firstObject] stringByAppendingPathComponent:@"UMSAgent_Cache.db"];
+    return documentsDirectory;
+}
+#endif
 
 +(UMSAgent*)getInstance
 {
@@ -96,7 +114,10 @@
         instance.isCrashReportEnabled = YES;
         instance.policy = 1;
         instance.sessionmillis = @"30";
-        instance.updateOnlyWifi =  @"1";        
+        instance.updateOnlyWifi =  @"1";
+#ifdef __UMSAgent_CacheTo_DB
+        instance.dbQue = [FMDatabaseQueue databaseQueueWithPath:self.getDBPath];
+#endif
     }
     return instance;
 }
@@ -132,9 +153,15 @@
                     selector:@selector(becomeActive:)
                         name:UIApplicationWillEnterForegroundNotification
                       object:nil];
-    [[UIApplication sharedApplication]registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | 
-     UIRemoteNotificationTypeAlert |
-     UIRemoteNotificationTypeSound];
+    
+    //注册本地推送
+    if([UIDevice currentDevice].systemVersion.floatValue >= 8){
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    }else{
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge |
+         UIRemoteNotificationTypeAlert |
+         UIRemoteNotificationTypeSound];
+    }
     
     
     self.startDate = [[NSDate date] copy];
@@ -316,6 +343,7 @@
         errorLog.osVersion = [[UIDevice currentDevice] systemVersion];
         errorLog.deviceID = [self machineName];
         NSLog(@"Error Log");
+#ifndef __UMSAgent_CacheTo_DB
         NSData *errorLogData = [[NSUserDefaults standardUserDefaults] objectForKey:@"errorLog"] ;
         NSMutableArray * errorLogArray = [[NSMutableArray alloc] init ];
         if (errorLogData!=nil) 
@@ -333,7 +361,18 @@
         NSData *newErrorData = [NSKeyedArchiver archivedDataWithRootObject:errorLogArray];
         [[NSUserDefaults standardUserDefaults] setObject:newErrorData forKey:@"errorLog"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-
+#else
+        [dbQue inDatabase:^(FMDatabase *db) {
+            if([db open]){
+#ifdef __UMSAgent_Key_DB
+                [db setKey:__UMSAgent_Key_DB];
+#endif
+                [db executeUpdate:[ErrorLog sqlite_createTable]];
+                [db executeUpdate:[errorLog sqlite_insertPerInfo]];
+                [db close];
+            }
+        }];
+#endif
     }
 }
 
@@ -368,6 +407,7 @@
         {
             NSLog(@"acLog sessionMils = %@",acLog.sessionMils);
         }
+#ifndef __UMSAgent_CacheTo_DB
         NSData *activityLogData = [[NSUserDefaults standardUserDefaults] objectForKey:@"activityLog"] ;
         NSMutableArray * activityLogArray = [[NSMutableArray alloc] init ];
         if (activityLogData!=nil) 
@@ -385,10 +425,22 @@
         NSData *newActivityData = [NSKeyedArchiver archivedDataWithRootObject:activityLogArray];
         [[NSUserDefaults standardUserDefaults] setObject:newActivityData forKey:@"activityLog"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+#else
+        [dbQue inDatabase:^(FMDatabase *db) {
+            if([db open]){
+#ifdef __UMSAgent_Key_DB
+                [db setKey:__UMSAgent_Key_DB];
+#endif
+                [db executeUpdate:[ActivityLog sqlite_createTable]];
+                [db executeUpdate:[acLog sqlite_insertPerInfo]];
+                [db close];
+            }
+        }];
+#endif
     }
 }
 
--(NSString *)md5:(NSString *)str { 
+-(NSString *)md5:(NSString *)str {
     const char *cStr = [str UTF8String]; 
     unsigned char result[32]; 
     CC_MD5( cStr, strlen(cStr), result ); 
@@ -585,6 +637,30 @@
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"activityLog"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"errorLog"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"clientDataArray"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+#ifdef __UMSAgent_CacheTo_DB
+                static BOOL needToPostAgain = NO;
+                [dbQue inDatabase:^(FMDatabase *db) {
+                    if ([db open]) {
+#ifdef __UMSAgent_Key_DB
+                        [db setKey:__UMSAgent_Key_DB];
+#endif
+                        //NSLog(@"count %d",[db intForQuery:[Event sqlite_countTable]]);
+                        [db executeUpdate:[Event sqlite_deleteListCount:__UMSAgent_Limit_num]];
+                        [db executeUpdate:[Tag sqlite_deleteListCount:__UMSAgent_Limit_num]];
+                        [db executeUpdate:[ActivityLog sqlite_deleteListCount:__UMSAgent_Limit_num]];
+                        [db executeUpdate:[ErrorLog sqlite_deleteListCount:__UMSAgent_Limit_num]];
+                        [db executeUpdate:[ClientData sqlite_deleteListCount:__UMSAgent_Limit_num]];
+                        //
+                        needToPostAgain = [db intForQuery:[Event sqlite_countTable]]>0 || [db intForQuery:[Tag sqlite_countTable]]>0 || [db intForQuery:[ActivityLog sqlite_countTable]]>0 || [db intForQuery:[ErrorLog sqlite_countTable]]>0 || [db intForQuery:[ClientData sqlite_countTable]]>0;
+                        //
+                        [db close];
+                    }
+                }];
+                if (needToPostAgain) {
+                    [self.class tryFlashData];
+                }
+#endif
             }
         }
     }
@@ -592,6 +668,7 @@
 
 -(NSMutableArray *)getArchiveEvent
 {
+#ifndef __UMSAgent_CacheTo_DB
     NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"eventArray"] ;
     NSMutableArray * array = nil;
     if(isLogEnabled)
@@ -619,11 +696,37 @@
             [eventArray addObject:requestDictionary];
         }
     }
+#else
+    NSMutableArray *eventArray = [[NSMutableArray alloc] init];
+    [dbQue inDatabase:^(FMDatabase *db) {
+        if ([db open]) {
+#ifdef __UMSAgent_Key_DB
+            [db setKey:__UMSAgent_Key_DB];
+#endif
+            FMResultSet* rs = [db executeQuery:[Event sqlite_selectListCount:__UMSAgent_Limit_num]];
+            if (rs) {
+                while ([rs next]) {
+                    NSMutableDictionary *requestDictionary = [[NSMutableDictionary alloc] init];
+                    [requestDictionary setObject:[rs stringForColumn:@"event_id"] forKey:@"event_identifier"];
+                    [requestDictionary setObject:[rs stringForColumn:@"time"] forKey:@"time"];
+                    [requestDictionary setObject:[rs stringForColumn:@"activity"] forKey:@"activity"];
+                    [requestDictionary setObject:[rs stringForColumn:@"label"] forKey:@"label"];
+                    [requestDictionary setObject:[NSNumber numberWithInt:[rs intForColumn:@"acc"]] forKey:@"acc"];
+                    [requestDictionary setObject:appKey forKey:@"appkey"];
+                    [requestDictionary setObject:[rs stringForColumn:@"version"] forKey:@"version"];
+                    [eventArray addObject:requestDictionary];
+                }
+            }
+            [db close];
+        }
+    }];
+#endif
     return eventArray;
 }
 
 -(NSMutableArray *)getArchiveTag
 {
+#ifndef __UMSAgent_CacheTo_DB
     NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"tagArray"] ;
     NSMutableArray * array = nil;
     if(isLogEnabled)
@@ -647,12 +750,34 @@
             [tagArray addObject:requestDictionary];
         }
     }
+#else
+    NSMutableArray *tagArray = [[NSMutableArray alloc] init];
+    [dbQue inDatabase:^(FMDatabase *db) {
+        if ([db open]) {
+#ifdef __UMSAgent_Key_DB
+            [db setKey:__UMSAgent_Key_DB];
+#endif
+            FMResultSet* rs = [db executeQuery:[Tag sqlite_selectListCount:__UMSAgent_Limit_num]];
+            if (rs) {
+                while ([rs next]) {
+                    NSMutableDictionary *requestDictionary = [[NSMutableDictionary alloc] init];
+                    [requestDictionary setObject:[rs stringForColumn:@"deviceid"] forKey:@"deviceid"];
+                    [requestDictionary setObject:[rs stringForColumn:@"tags"] forKey:@"tags"];
+                    [requestDictionary setObject:[rs stringForColumn:@"productkey"] forKey:@"productkey"];
+                    [tagArray addObject:requestDictionary];
+                }
+            }
+            [db close];
+        }
+    }];
+#endif
     return tagArray;
 }
 
 
 -(NSMutableArray *)getArchiveActivityLog
 {
+#ifndef __UMSAgent_CacheTo_DB
     NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"activityLog"] ;
     NSMutableArray * array = nil;
     if (oldData!=nil) 
@@ -679,11 +804,37 @@
             [activityLogArray addObject:requestDictionary];
         }
     }
+#else
+    NSMutableArray *activityLogArray = [[NSMutableArray alloc] init];
+    [dbQue inDatabase:^(FMDatabase *db) {
+        if ([db open]) {
+#ifdef __UMSAgent_Key_DB
+            [db setKey:__UMSAgent_Key_DB];
+#endif
+            FMResultSet* rs = [db executeQuery:[ActivityLog sqlite_selectListCount:__UMSAgent_Limit_num]];
+            if (rs) {
+                while ([rs next]) {
+                    NSMutableDictionary *requestDictionary = [[NSMutableDictionary alloc] init];
+                    [requestDictionary setObject:[rs stringForColumn:@"sessionMils"] forKey:@"session_id"];
+                    [requestDictionary setObject:[rs stringForColumn:@"startMils"] forKey:@"start_millis"];
+                    [requestDictionary setObject:[rs stringForColumn:@"endMils"] forKey:@"end_millis"];
+                    [requestDictionary setObject:[rs stringForColumn:@"duration"] forKey:@"duration"];
+                    [requestDictionary setObject:[rs stringForColumn:@"activity"] forKey:@"activities"];
+                    [requestDictionary setObject:appKey forKey:@"appkey"];
+                    [requestDictionary setObject:[rs stringForColumn:@"version"] forKey:@"version"];
+                    [activityLogArray addObject:requestDictionary];
+                }
+            }
+            [db close];
+        }
+    }];
+#endif
     return activityLogArray;
 }
 
 -(NSMutableArray *)getArchiveErrorLog
 {
+#ifndef __UMSAgent_CacheTo_DB
     NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"errorLog"] ;
     NSMutableArray * array = nil;
     if (oldData!=nil) 
@@ -710,17 +861,43 @@
             [errorLogArray addObject:requestDictionary];
         }
     }
+#else
+    NSMutableArray *errorLogArray = [[NSMutableArray alloc] init];
+    [dbQue inDatabase:^(FMDatabase *db) {
+        if ([db open]) {
+#ifdef __UMSAgent_Key_DB
+            [db setKey:__UMSAgent_Key_DB];
+#endif
+            FMResultSet* rs = [db executeQuery:[ErrorLog sqlite_selectListCount:__UMSAgent_Limit_num]];
+            if (rs) {
+                while ([rs next]) {
+                    NSMutableDictionary *requestDictionary = [[NSMutableDictionary alloc] init];
+                    [requestDictionary setObject:[rs stringForColumn:@"time"] forKey:@"time"];
+                    [requestDictionary setObject:[rs stringForColumn:@"stackTrace"] forKey:@"stacktrace"];
+                    [requestDictionary setObject:[rs stringForColumn:@"version"] forKey:@"version"];
+                    [requestDictionary setObject:[rs stringForColumn:@"osVersion"] forKey:@"os_version"];
+                    [requestDictionary setObject:[rs stringForColumn:@"deviceID"] forKey:@"deviceid"];
+                    [requestDictionary setObject:[rs stringForColumn:@"appkey"] forKey:@"appkey"];
+                    [requestDictionary setObject:[rs stringForColumn:@"activity"] forKey:@"activity"];
+                    [errorLogArray addObject:requestDictionary];
+                }
+            }
+            [db close];
+        }
+    }];
+#endif
     return errorLogArray;
 }
 
 
 -(void)postEventInBackGround:(Event *)event
-{            
+{
     @autoreleasepool {
         CommonReturn *ret ;
         ret = [postEventDao postEvent:self.appKey event:event];
         if (ret.flag<0) 
         {
+#ifndef __UMSAgent_CacheTo_DB
             NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"eventArray"] ;
             NSMutableArray * array = [[NSMutableArray alloc] init];
             
@@ -732,6 +909,18 @@
             NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:array];
             [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"eventArray"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+#else
+            [dbQue inDatabase:^(FMDatabase *db) {
+                if([db open]){
+#ifdef __UMSAgent_Key_DB
+                    [db setKey:__UMSAgent_Key_DB];
+#endif
+                    [db executeUpdate:[Event sqlite_createTable]];
+                    [db executeUpdate:[event sqlite_insertPerInfo]];
+                    [db close];
+                }
+            }];
+#endif
         }
     }
 }
@@ -743,6 +932,7 @@
         ret = [PostTagDao postTag:self.appKey tag:tag];
         if (ret.flag<0)
         {
+#ifndef __UMSAgent_CacheTo_DB
             NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"tagArray"] ;
             NSMutableArray * array = [[NSMutableArray alloc] init];
             
@@ -754,6 +944,18 @@
             NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:array];
             [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"tagArray"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+#else
+            [dbQue inDatabase:^(FMDatabase *db) {
+                if([db open]){
+#ifdef __UMSAgent_Key_DB
+                    [db setKey:__UMSAgent_Key_DB];
+#endif
+                    [db executeUpdate:[Tag sqlite_createTable]];
+                    [db executeUpdate:[tag sqlite_insertPerInfo]];
+                    [db close];
+                }
+            }];
+#endif
         }
     }
 }
@@ -762,32 +964,35 @@
 
 -(void)postOldEventDataInBackGround:(NSMutableArray *)array
 {        
-    @autoreleasepool {   
-    for (int i =0; i<[array count]; i++) 
-    {
-        Event *event = [array objectAtIndex:i];
-        
-        CommonReturn *ret ;
-        ret = [postEventDao postEvent:appKey event:event];
-        if (ret.flag>0) 
+    @autoreleasepool {
+        for (int i =0; i<[array count]; i++)
         {
-            [array removeObjectAtIndex:i];
-
-        }
+            Event *event = [array objectAtIndex:i];
+            
+            CommonReturn *ret ;
+            ret = [postEventDao postEvent:appKey event:event];
+            if (ret.flag>0)
+            {
+                [array removeObjectAtIndex:i];
                 
-        NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:array];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"eventArray"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+            }
+            
+#ifndef __UMSAgent_CacheTo_DB
+            NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:array];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"eventArray"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+#endif
+        }
     }
 }
 
 -(void)archiveClientData
 {
     ClientData *clientData = [self getDeviceInfo];
-    NSMutableArray *mClientDataArray;
     if (self.policy == BATCH) {
+#ifndef __UMSAgent_CacheTo_DB
+        NSMutableArray *mClientDataArray;
         NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"clientDataArray"] ;
         if (oldData!=nil)
         {
@@ -809,6 +1014,18 @@
         NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:mClientDataArray];
         [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"clientDataArray"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+#else
+        [dbQue inDatabase:^(FMDatabase *db) {
+            if([db open]){
+#ifdef __UMSAgent_Key_DB
+                [db setKey:__UMSAgent_Key_DB];
+#endif
+                [db executeUpdate:[ClientData sqlite_createTable]];
+                [db executeUpdate:[clientData sqlite_insertPerInfo]];
+                [db close];
+            }
+        }];
+#endif
     }
     else
     {
@@ -828,6 +1045,7 @@
 
 -(NSMutableArray *)getArchiveClientData
 {
+#ifndef __UMSAgent_CacheTo_DB
     NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"clientDataArray"] ;
     NSMutableArray * array = nil;
     if (oldData!=nil)
@@ -876,6 +1094,53 @@
             [clientDataArray addObject:requestDictionary];
         }
     }
+#else
+    NSMutableArray *clientDataArray = [[NSMutableArray alloc] init];
+    [dbQue inDatabase:^(FMDatabase *db) {
+        if ([db open]) {
+#ifdef __UMSAgent_Key_DB
+            [db setKey:__UMSAgent_Key_DB];
+#endif
+            FMResultSet* rs = [db executeQuery:[ClientData sqlite_selectListCount:__UMSAgent_Limit_num]];
+            if (rs) {
+                while ([rs next]) {
+                    NSMutableDictionary *requestDictionary = [[NSMutableDictionary alloc] init];
+                    [requestDictionary setObject:[rs stringForColumn:@"platform"] forKey:@"platform"];
+                    [requestDictionary setObject:[rs stringForColumn:@"os_version"] forKey:@"os_version"];
+                    [requestDictionary setObject:[rs stringForColumn:@"language"] forKey:@"language"];
+                    [requestDictionary setObject:[rs stringForColumn:@"resolution"] forKey:@"resolution"];
+                    [requestDictionary setObject:[rs stringForColumn:@"deviceid"] forKey:@"deviceid"];
+                    if ([rs stringForColumn:@"userid"]!=nil) {
+                        [requestDictionary setObject:[rs stringForColumn:@"userid"] forKey:@"userid"];
+                    }
+                    else
+                    {
+                        [requestDictionary setObject:@"" forKey:@"userid"];
+                    }
+                    
+                    if([rs stringForColumn:@"mccmnc"]!=nil)
+                    {
+                        [requestDictionary setObject:[rs stringForColumn:@"mccmnc"] forKey:@"mccmnc"];
+                    }
+                    else
+                    {
+                        [requestDictionary setObject:@"" forKey:@"mccmnc"];
+                        
+                    }
+                    [requestDictionary setObject:[rs stringForColumn:@"version"] forKey:@"version"];
+                    [requestDictionary setObject:[rs stringForColumn:@"network"] forKey:@"network"];
+                    [requestDictionary setObject:[rs stringForColumn:@"devicename"] forKey:@"devicename"];
+                    [requestDictionary setObject:[rs stringForColumn:@"modulename"] forKey:@"modulename"];
+                    [requestDictionary setObject:[rs stringForColumn:@"time"] forKey:@"time"];
+                    [requestDictionary setObject:appKey forKey:@"appkey"];
+                    [requestDictionary setObject:[rs stringForColumn:@"isjailbroken"] forKey:@"isjailbroken"];
+                    [clientDataArray addObject:requestDictionary];
+                }
+            }
+            [db close];
+        }
+    }];
+#endif
     return clientDataArray;
 }
 
@@ -883,8 +1148,9 @@
 
 -(void)archiveEvent:(Event *)event
 {
-    NSMutableArray *mEventArray;
     if (self.policy == BATCH) {
+#ifndef __UMSAgent_CacheTo_DB
+        NSMutableArray *mEventArray;
         NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"eventArray"] ;
         if (oldData!=nil) 
         {
@@ -906,6 +1172,18 @@
         NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:mEventArray];
         [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"eventArray"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+#else
+        [dbQue inDatabase:^(FMDatabase *db) {
+            if([db open]){
+#ifdef __UMSAgent_Key_DB
+                [db setKey:__UMSAgent_Key_DB];
+#endif
+                [db executeUpdate:[Event sqlite_createTable]];
+                [db executeUpdate:[event sqlite_insertPerInfo]];
+                [db close];
+            }
+        }];
+#endif
     }
     else
     {
@@ -915,8 +1193,9 @@
 
 -(void)archiveTag:(Tag *)tag
 {
-    NSMutableArray *mTagArray;
     if (self.policy == BATCH) {
+#ifndef __UMSAgent_CacheTo_DB
+        NSMutableArray *mTagArray;
         NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"tagArray"] ;
         if (oldData!=nil)
         {
@@ -938,6 +1217,18 @@
         NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:mTagArray];
         [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"tagArray"];
         [[NSUserDefaults standardUserDefaults] synchronize];
+#else
+        [dbQue inDatabase:^(FMDatabase *db) {
+            if([db open]){
+#ifdef __UMSAgent_Key_DB
+                [db setKey:__UMSAgent_Key_DB];
+#endif
+                [db executeUpdate:[Tag sqlite_createTable]];
+                [db executeUpdate:[tag sqlite_insertPerInfo]];
+                [db close];
+            }
+        }];
+#endif
     }
     else
     {
@@ -1028,46 +1319,59 @@
 -(void)postClientDataInBackground:(ClientData *)clientData
 {
     @autoreleasepool {
-    //[self isWiFiAvailable];
-    CommonReturn *ret ;
-    ret = [PostClientDataDao postClient:self.appKey deviceInfo:clientData];
+        //[self isWiFiAvailable];
+        CommonReturn *ret ;
+        ret = [PostClientDataDao postClient:self.appKey deviceInfo:clientData];
         
-    if(ret.flag >0)
-    {
-        if(isLogEnabled)
+        if(ret.flag >0)
         {
-            NSLog(@"Post Client Data OK: Flag = %d, Msg = %@",ret.flag,ret.msg);
-        }
-    }
-    else 
-    {
-        if(isLogEnabled)
-        {
-            NSLog(@"Post Client Data Error: So save to archive. Flag = %d, Msg = %@",ret.flag,ret.msg);
-        }
-        NSMutableArray *mClientDataArray;
-        NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"clientDataArray"] ;
-        if (oldData!=nil)
-        {
-            mClientDataArray = [NSKeyedUnarchiver unarchiveObjectWithData:oldData];
+            if(isLogEnabled)
+            {
+                NSLog(@"Post Client Data OK: Flag = %d, Msg = %@",ret.flag,ret.msg);
+            }
         }
         else
         {
-            mClientDataArray = [[NSMutableArray alloc] init];
+            if(isLogEnabled)
+            {
+                NSLog(@"Post Client Data Error: So save to archive. Flag = %d, Msg = %@",ret.flag,ret.msg);
+            }
+#ifndef __UMSAgent_CacheTo_DB
+            NSMutableArray *mClientDataArray;
+            NSData *oldData = [[NSUserDefaults standardUserDefaults] objectForKey:@"clientDataArray"] ;
+            if (oldData!=nil)
+            {
+                mClientDataArray = [NSKeyedUnarchiver unarchiveObjectWithData:oldData];
+            }
+            else
+            {
+                mClientDataArray = [[NSMutableArray alloc] init];
+            }
+            if(isLogEnabled)
+            {
+                NSLog(@"archive client data because of BATCH mode");
+            }
+            [mClientDataArray addObject:clientData];
+            if(isLogEnabled)
+            {
+                NSLog(@"Archived client data = %d",[mClientDataArray count]);
+            }
+            NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:mClientDataArray];
+            [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"clientDataArray"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+#else
+            [dbQue inDatabase:^(FMDatabase *db) {
+                if([db open]){
+#ifdef __UMSAgent_Key_DB
+                    [db setKey:__UMSAgent_Key_DB];
+#endif
+                    [db executeUpdate:[ClientData sqlite_createTable]];
+                    [db executeUpdate:[clientData sqlite_insertPerInfo]];
+                    [db close];
+                }
+            }];
+#endif
         }
-        if(isLogEnabled)
-        {
-            NSLog(@"archive client data because of BATCH mode");
-        }
-        [mClientDataArray addObject:clientData];
-        if(isLogEnabled)
-        {
-            NSLog(@"Archived client data = %d",[mClientDataArray count]);
-        }
-        NSData *newData = [NSKeyedArchiver archivedDataWithRootObject:mClientDataArray];
-        [[NSUserDefaults standardUserDefaults] setObject:newData forKey:@"clientDataArray"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
     }
 }
 
@@ -1082,12 +1386,12 @@
     
 }
 
-uncaughtExceptionHandler(NSException *exception) {    
+void uncaughtExceptionHandler(NSException *exception) {
     NSLog(@"CRASH: %@", exception);      
     NSLog(@"Stack Trace: %@", [exception callStackSymbols]);    
     NSString *stackTrace = [[NSString alloc] initWithFormat:@"%@\n%@",exception,[exception callStackSymbols]]; 
     [[UMSAgent getInstance] saveErrorLog:stackTrace];
-
+    
 }
 
 -(void)postErrorLog:(NSString*)stackTrace
@@ -1240,6 +1544,12 @@ uncaughtExceptionHandler(NSException *exception) {
             return openUDID;
         }
     }
+}
+
++ (void)tryFlashData
+{
+    NSThread* thread = [[NSThread alloc] initWithTarget:[self getInstance] selector:@selector(processArchivedLogs) object:nil];
+    [thread start];
 }
 
 @end

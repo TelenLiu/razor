@@ -66,5 +66,29 @@
     [aCoder encodeObject:userid forKey:@"userid"];
 }
 
++ (NSString *)sqlite_createTable
+{
+    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (platform text,os_version text,language text,resolution text,deviceid text,mccmnc text,version text,network text,devicename text,modulename text,time text,isjailbroken text,userid text)",NSStringFromClass(self)];
+}
+
+- (NSString*)sqlite_insertPerInfo
+{
+    return [NSString stringWithFormat:@"INSERT INTO %@ VALUES('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@')",NSStringFromClass(self.class),platform,os_version,language,resolution,deviceid,mccmnc,version,network,devicename,modulename,time,isjailbroken,userid];
+}
+
++(NSString*)sqlite_selectListCount:(NSUInteger)count
+{
+    return [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY time LIMIT 0,%d",NSStringFromClass(self),count];
+}
+
++(NSString*)sqlite_countTable
+{
+    return [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@",NSStringFromClass(self)];
+}
+
++(NSString*)sqlite_deleteListCount:(NSUInteger)count
+{
+    return [NSString stringWithFormat:@"DELETE FROM %@ WHERE time IN(SELECT time FROM %@ ORDER BY time LIMIT 0,%d)",NSStringFromClass(self),NSStringFromClass(self),count];
+}
 
 @end

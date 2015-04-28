@@ -15,6 +15,10 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#define __UMSAgent_CacheTo_DB  //定义开启，sqlite记录信息
+#define __UMSAgent_Key_DB @"cccsee.cn"  //需要sqlite 版本支持
+#define __UMSAgent_Limit_num 100
+
 typedef enum {
     REALTIME = 0,       //RealTime Send Policy
     BATCH = 1,          //Send Data When Start
@@ -52,5 +56,7 @@ typedef enum {
 + (void)setOnLineConfig:(BOOL)isOnlineConfig;
 + (void)setIsLogEnabled:(BOOL)isLogEnabled;
 + (NSString*)getUMSUDID;
+
++ (void)tryFlashData; //telen 尝试发送一次数据
 
 @end

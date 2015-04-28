@@ -31,4 +31,10 @@
 @property (nonatomic,strong) NSString *activity;
 @property (nonatomic,strong) NSString *version;
 
++(NSString*)sqlite_createTable;
+-(NSString*)sqlite_insertPerInfo;
++(NSString*)sqlite_selectListCount:(NSUInteger)count;
++(NSString*)sqlite_countTable;
++(NSString*)sqlite_deleteListCount:(NSUInteger)count;
+
 @end

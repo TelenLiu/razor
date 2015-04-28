@@ -44,4 +44,10 @@
 @property (nonatomic,strong) NSString *isjailbroken;
 @property (nonatomic,strong) NSString *userid;
 
++(NSString*)sqlite_createTable;
+-(NSString*)sqlite_insertPerInfo;
++(NSString*)sqlite_selectListCount:(NSUInteger)count;
++(NSString*)sqlite_countTable;
++(NSString*)sqlite_deleteListCount:(NSUInteger)count;
+
 @end
